@@ -33,21 +33,22 @@
   width: 22px;
   height: 22px;
   border-radius: 6px;
-  background:
-    radial-gradient(circle at 30% 30%, var(--accent), transparent 60%),
-    linear-gradient(135deg, var(--accent-strong), #0d7a44);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25) inset, 0 0 18px var(--accent-soft);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 55%, var(--violet) 140%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset, 0 0 16px var(--accent-soft);
   position: relative;
+  flex-shrink: 0;
 }
 
 .brand-mark::after {
   content: "";
   position: absolute;
-  inset: 4px;
-  border-radius: 3px;
-  background: var(--bg);
-  opacity: 0.9;
-  mix-blend-mode: multiply;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--bg-elev);
 }
 
 .nav-links {
@@ -289,6 +290,10 @@
   overflow: hidden;
 }
 
+@media (max-width: 640px) {
+  .counter-card { padding: var(--space-5); }
+}
+
 .counter-card::before {
   content: "";
   position: absolute;
@@ -355,8 +360,9 @@
 }
 
 .counter-currency {
-  font-size: var(--fs-2xl);
+  font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
   color: var(--text-muted);
+  font-weight: 500;
 }
 
 .counter-value {

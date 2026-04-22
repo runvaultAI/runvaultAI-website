@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Updates · RunVault</title>
+    <meta
+      name="description"
+      content="Product updates, releases, and milestones from the RunVault team."
+    />
+    <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafaf8" media="(prefers-color-scheme: light)" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/tokens.css" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/animations.css" />
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("runvault:theme");
+          var prefers = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", saved || prefers);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <svg class="token-flow" aria-hidden="true"></svg>
+
+    <header class="nav" role="banner">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html" aria-label="RunVault home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">RunVault</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html#how">How it works</a>
+          <a href="index.html#why-now">Why now</a>
+          <a href="index.html#pricing">Pricing</a>
+          <a href="updates.html" aria-current="page">Updates</a>
+        </nav>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" aria-label="Toggle theme" data-theme-toggle>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke-linecap="round"/>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <a class="btn btn-ghost" href="index.html#contact">Sign in</a>
+          <a class="btn btn-primary" href="index.html#contact">Get early access</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="bg-grid" aria-hidden="true"></div>
+        <div class="container-narrow">
+          <div class="section-head reveal">
+            <span class="eyebrow">Updates</span>
+            <h1 style="font-size: clamp(2.25rem, 4vw + 1rem, 3.5rem);">What we're shipping.</h1>
+            <p class="muted">
+              Notes from the team. Follows the product as we move through
+              private beta, public GA, and enterprise scale.
+            </p>
+          </div>
+
+          <div class="updates-list" data-updates>
+            <div class="updates-empty">Loading updates…</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>RunVault</span>
+        </div>
+        <div class="footer-cols">
+          <div>
+            <h4>Product</h4>
+            <a href="index.html#how">How it works</a>
+            <a href="index.html#pricing">Pricing</a>
+            <a href="updates.html">Updates</a>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <a href="mailto:contact@runvault.ai">Contact</a>
+            <a href="#">Careers</a>
+            <a href="#">Press</a>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <a href="#">Docs</a>
+            <a href="#">SDK reference</a>
+            <a href="#">Status</a>
+          </div>
+        </div>
+      </div>
+      <div class="container footer-base">
+        <span class="faint">© 2026 RunVault, Inc.</span>
+        <span class="faint">Financial identity for autonomous agents.</span>
+      </div>
+    </footer>
+
+    <script src="assets/js/theme.js" defer></script>
+    <script src="assets/js/reveal.js" defer></script>
+    <script src="assets/js/token-flow.js" defer></script>
+    <script src="assets/js/updates.js" defer></script>
+  </body>
+</html>

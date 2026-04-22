@@ -22,7 +22,9 @@
       path.setAttribute("d", d);
 
       const isAccent = i % 3 === 0;
-      path.setAttribute("stroke", `var(--token-line${isAccent ? "" : "-faint"})`);
+      // CSS custom properties don't resolve in SVG presentation attrs reliably —
+      // set via the style property instead.
+      path.style.stroke = `var(--token-line${isAccent ? "" : "-faint"})`;
       path.setAttribute("stroke-width", isAccent ? "1" : "0.8");
 
       // Randomize dash + duration so streams feel independent
