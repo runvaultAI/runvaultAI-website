@@ -6,7 +6,7 @@ Entries use the format `## YYYY-MM-DD — Title`. Newest first; rendering is sor
 
 We're onboarding the first cohort of design partners this week. Ten AI-native teams running multi-agent deployments in production, across research, support, and agentic commerce.
 
-If you're shipping agents that spend real money and want a wallet they can't bypass, reach out at `contact@runvault.ai`.
+If you're shipping agents that act as economic actors and need a financial identity they can't bypass, reach out at `contact@runvault.ai`.
 
 ## 2026-04-02 — Concurrency proof landed
 
