@@ -1,0 +1,89 @@
+/* ──────────────────────────────────────────────────────────────
+   SCROLL REVEAL
+   ────────────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   KEYFRAMES
+   ────────────────────────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: 0.6; transform: scale(0.9); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-3px); }
+  75%      { transform: translateX(3px); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes token-stream {
+  to { stroke-dashoffset: -200; }
+}
+
+@keyframes caret-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   TOKEN FLOW BACKGROUND
+   ────────────────────────────────────────────────────────────── */
+.token-flow {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, black 12%, black 85%, transparent 100%),
+    radial-gradient(ellipse at center, black 40%, transparent 90%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, black 12%, black 85%, transparent 100%),
+    radial-gradient(ellipse at center, black 40%, transparent 90%);
+  -webkit-mask-composite: source-in;
+  opacity: 0.85;
+}
+
+.token-flow path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 2 10;
+  animation-name: token-stream;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .token-flow path { animation: none; }
+}
+
+main, .nav, .footer { position: relative; z-index: 1; }
+
+/* Hero typewriter effect (subtle; only on first view) */
+.code-window.is-typing pre code {
+  border-right: 2px solid var(--accent);
+  animation: caret-blink 900ms steps(2) infinite;
+  white-space: pre-wrap;
+}

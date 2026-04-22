@@ -1,3 +1,486 @@
-<html>
-  testing
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RunVault — A wallet for your AI agents</title>
+    <meta
+      name="description"
+      content="RunVault gives each AI agent its own spending limit, scoped credentials, and a hard stop before anything gets charged. Works with every payment rail and every LLM provider."
+    />
+    <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafaf8" media="(prefers-color-scheme: light)" />
+
+    <meta property="og:title" content="RunVault — A wallet for your AI agents" />
+    <meta
+      property="og:description"
+      content="Scoped credentials, hard spending caps, and a gate that fires before any charge lands."
+    />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/tokens.css" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/animations.css" />
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("runvault:theme");
+          var prefers = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", saved || prefers);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <svg class="token-flow" aria-hidden="true"></svg>
+
+    <header class="nav" role="banner">
+      <div class="container nav-inner">
+        <a class="brand" href="/" aria-label="RunVault home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">RunVault</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#how">How it works</a>
+          <a href="#why-now">Why now</a>
+          <a href="#pricing">Pricing</a>
+          <a href="updates.html">Updates</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" aria-label="Toggle theme" data-theme-toggle>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke-linecap="round"/>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <a class="btn btn-ghost" href="#contact">Sign in</a>
+          <a class="btn btn-primary" href="#contact">Get early access</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="section hero">
+        <div class="bg-grid" aria-hidden="true"></div>
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <span class="eyebrow">Private beta · 2026</span>
+            <h1>
+              Give your AI agents <span class="hl">a wallet you control</span>.
+            </h1>
+            <p class="hero-sub">
+              Each agent gets its own spending limit, scoped credentials, and a hard stop
+              that fires <em>before</em> anything is charged. Works with every payment rail
+              and every LLM provider — so one runaway agent can't drain the company card.
+            </p>
+            <div class="hero-cta">
+              <a class="btn btn-primary btn-lg" href="#contact">Start building</a>
+              <a class="btn btn-ghost btn-lg" href="#how">See how it works →</a>
+            </div>
+
+            <ul class="hero-bullets">
+              <li><span class="dot"></span> Drop-in SDK · <code>pip install runvault</code></li>
+              <li><span class="dot"></span> Hard spend caps, enforced atomically</li>
+              <li><span class="dot"></span> One integration, every payment rail</li>
+            </ul>
+          </div>
+
+          <div class="hero-code reveal" aria-hidden="false">
+            <div class="code-window">
+              <div class="code-header">
+                <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+                <span class="code-title">agent.py</span>
+              </div>
+<pre><code><span class="c1"># Give the agent a wallet with a $500 ceiling.</span>
+agent = runvault.<span class="fn">connect</span>(
+  agent_id=<span class="s">"research-agent-01"</span>,
+  budget=<span class="n">500.00</span>,
+  scope=[<span class="s">"llm"</span>, <span class="s">"commerce"</span>],
+)
+
+<span class="c1"># Same identity. Any rail. No raw card number.</span>
+agent.<span class="fn">pay</span>(merchant=<span class="s">"amazon.com"</span>, amount=<span class="n">29.99</span>)
+<span class="c1"># ↳ RunVault picks the rail, issues a one-use card,</span>
+<span class="c1">#   enforces the cap, logs the spend.</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- MONEY COUNTER -->
+        <div class="container">
+          <div class="counter-card reveal" data-money-counter>
+            <div class="counter-meta">
+              <div class="counter-label">
+                <span class="eyebrow" style="margin:0">Live monitoring</span>
+                <p class="mono faint counter-agent">
+                  agent <span class="accent">research-agent-01</span>
+                  · cap <span>$500.00</span>
+                  · scope llm, commerce
+                </p>
+              </div>
+              <div class="counter-status" data-counter-status>
+                <span class="counter-pulse" aria-hidden="true"></span>
+                <span class="counter-status-text">monitoring</span>
+              </div>
+            </div>
+            <div class="counter-display">
+              <span class="counter-currency">$</span>
+              <span class="counter-value" data-counter-value>0.00</span>
+              <span class="counter-cap faint">/ $500.00</span>
+            </div>
+            <div class="counter-bar" aria-hidden="true">
+              <div class="counter-bar-fill" data-counter-bar></div>
+            </div>
+            <div class="counter-events" data-counter-events aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROBLEM -->
+      <section class="section" id="problem">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow">The problem</span>
+            <h2>AI agents spend real money. Nothing was built for them.</h2>
+            <p class="muted">
+              Today most teams hand their agent a shared API key or a company card and hope
+              for the best. When something goes wrong — a prompt injection, a bad loop,
+              a compromised dependency — there's no per-agent cap, no audit trail,
+              and no way to stop a charge before it clears.
+            </p>
+          </div>
+
+          <div class="grid grid-3">
+            <article class="card card-num">
+              <span class="card-num-badge">01</span>
+              <h3>Your agent is using your card</h3>
+              <p>Real credit cards and raw API keys end up pasted into agent context. One leak exposes the actual account — with no spend cap and no way to revoke just that agent.</p>
+            </article>
+            <article class="card card-num">
+              <span class="card-num-badge">02</span>
+              <h3>Every checkout is a different integration</h3>
+              <p>Stripe ACP, Visa VIC, Google AP2, x402 — six agent-payment protocols in 18 months. Each one needs its own registration, credentials, and merchant list.</p>
+            </article>
+            <article class="card card-num">
+              <span class="card-num-badge">03</span>
+              <h3>Budget checks happen too late</h3>
+              <p>Payment networks authorise <em>after</em> the transaction is submitted. Concurrent agents race each other and collectively overspend before any check fires.</p>
+            </article>
+            <article class="card card-num">
+              <span class="card-num-badge">04</span>
+              <h3>LLM spend and purchase spend live in different systems</h3>
+              <p>An agent can be well within its Claude budget while dramatically overspending on purchases. No single view of what an agent actually cost you.</p>
+            </article>
+            <article class="card card-num">
+              <span class="card-num-badge">05</span>
+              <h3>A bad agent on one rail looks fine on the next</h3>
+              <p>Reputation doesn't follow the agent. Merchants can't screen an agent before fulfilling a high-value order, because every rail has its own registry.</p>
+            </article>
+            <article class="card card-quote">
+              <p class="quote">
+                "Every financial system built in the last fifty years assumes a human
+                is the one spending. Agents aren't humans. They need a wallet of their own."
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOLUTION / HOW IT WORKS -->
+      <section class="section section-alt" id="how">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow">How it works</span>
+            <h2>One SDK call. Three things happen.</h2>
+            <p class="muted">
+              RunVault sits between your agent and the outside world. You write two lines;
+              we handle the wallet, the cap, and the rail underneath.
+            </p>
+          </div>
+
+          <div class="grid grid-3">
+            <article class="card card-step" style="--accent-local: var(--accent)">
+              <span class="card-step-num">01</span>
+              <h3>A wallet for the agent</h3>
+              <p>
+                <code>runvault.connect()</code> issues a signed, short-lived credential
+                tied to one agent. You set the ceiling and the scope — LLM calls,
+                purchases, or both. Revocable in under a second.
+              </p>
+            </article>
+            <article class="card card-step" style="--accent-local: var(--violet)">
+              <span class="card-step-num">02</span>
+              <h3>A hard stop, before the charge</h3>
+              <p>
+                Every spend goes through a single atomic check. The cap is enforced
+                before any upstream call — so a thousand concurrent agents can't
+                race past the limit.
+              </p>
+            </article>
+            <article class="card card-step" style="--accent-local: var(--warn)">
+              <span class="card-step-num">03</span>
+              <h3>Any rail, same call</h3>
+              <p>
+                Virtual card today. Stripe ACP, Visa VIC, stablecoin tomorrow.
+                RunVault picks the right rail for the merchant. You never re-integrate.
+              </p>
+            </article>
+          </div>
+
+          <div class="arch-diagram reveal" aria-hidden="true">
+            <div class="arch-row arch-row-core">
+              <div class="arch-node">Your agent</div>
+              <span class="arch-arrow">→</span>
+              <div class="arch-node arch-node-accent">RunVault wallet</div>
+              <span class="arch-arrow">→</span>
+              <div class="arch-node arch-node-accent">Atomic cap check</div>
+              <span class="arch-arrow">→</span>
+              <div class="arch-node arch-node-muted">Execution rail</div>
+            </div>
+            <div class="arch-row arch-row-rails">
+              <span class="arch-rail-label">Swappable rails:</span>
+              <span class="chip">Virtual card</span>
+              <span class="chip">Stripe ACP</span>
+              <span class="chip chip-violet">Visa VIC</span>
+              <span class="chip chip-warn">AP2</span>
+              <span class="chip chip-warn">x402 / USDC</span>
+              <span class="chip chip-faint">Next…</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY NOW -->
+      <section class="section" id="why-now">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow">Why now</span>
+            <h2>The rails are live. The wallet isn't.</h2>
+            <p class="muted">
+              In the last eighteen months, every major network shipped an agent payment rail —
+              and none of them agree on who the agent is.
+            </p>
+          </div>
+
+          <ol class="timeline">
+            <li class="timeline-item reveal">
+              <span class="timeline-dot" style="--dot: var(--accent)"></span>
+              <div class="timeline-meta">
+                <time>Apr 2025</time>
+                <span class="chip">Payment rail</span>
+              </div>
+              <h3>Visa opens its network to AI agents</h3>
+              <p>Partners include Anthropic, OpenAI, Stripe, and Microsoft.</p>
+            </li>
+            <li class="timeline-item reveal">
+              <span class="timeline-dot" style="--dot: var(--violet)"></span>
+              <div class="timeline-meta">
+                <time>Sep 2025</time>
+                <span class="chip chip-violet">Commerce</span>
+              </div>
+              <h3>Stripe ACP, Google AP2, and "Buy it in ChatGPT" all launch</h3>
+              <p>Three competing agent-commerce protocols in one quarter. Agent checkout becomes mainstream.</p>
+            </li>
+            <li class="timeline-item reveal">
+              <span class="timeline-dot" style="--dot: var(--warn)"></span>
+              <div class="timeline-meta">
+                <time>Oct 2025</time>
+                <span class="chip chip-warn">Protocol</span>
+              </div>
+              <h3>Visa Trusted Agent Protocol + Mastercard Agent Pay</h3>
+              <p>Cryptographic agent authentication at merchant checkout. Cloudflare and Worldpay co-launch.</p>
+            </li>
+            <li class="timeline-item reveal">
+              <span class="timeline-dot" style="--dot: var(--accent)"></span>
+              <div class="timeline-meta">
+                <time>Nov 2025</time>
+                <span class="chip">Consumer</span>
+              </div>
+              <h3>Perplexity + PayPal ships agent shopping for US consumers</h3>
+              <p>Free agentic shopping. Agent-initiated purchases settle via PayPal.</p>
+            </li>
+            <li class="timeline-item timeline-item-now reveal">
+              <span class="timeline-dot" style="--dot: var(--danger)"></span>
+              <div class="timeline-meta">
+                <time>2026</time>
+                <span class="chip chip-danger">We are here</span>
+              </div>
+              <h3>Hundreds of real agent purchases in production</h3>
+              <p>Six rails. Zero shared identity. That's the gap RunVault fills.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- MARKET -->
+      <section class="section section-alt" id="market">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow">Market</span>
+            <h2>Revenue scales with agent activity, not headcount.</h2>
+          </div>
+          <div class="grid grid-4">
+            <div class="stat reveal">
+              <div class="stat-value">$42B</div>
+              <div class="stat-label">LLM API market by 2026</div>
+              <p>Every AI team building agents needs per-agent cost controls.</p>
+            </div>
+            <div class="stat reveal" style="--stat-accent: var(--violet)">
+              <div class="stat-value">$1.2T+</div>
+              <div class="stat-label">Agent-mediated commerce GMV by 2030</div>
+              <p>Visa, Stripe, Mastercard, and Google are racing to own the rail.</p>
+            </div>
+            <div class="stat reveal">
+              <div class="stat-value">$4T+</div>
+              <div class="stat-label">Card GMV addressable via virtual cards</div>
+              <p>Works on every merchant today — no protocol adoption required.</p>
+            </div>
+            <div class="stat reveal" style="--stat-accent: var(--warn)">
+              <div class="stat-value">$800M</div>
+              <div class="stat-label">Immediate SAM — AI platforms + multi-agent infra</div>
+              <p>Self-serve signup. No enterprise procurement cycle required.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section class="section" id="pricing">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow">Pricing</span>
+            <h2>Start free. Pay when your agents do.</h2>
+            <p class="muted">
+              The SDK is MIT-licensed and free forever. Managed infrastructure, virtual cards,
+              and the reputation network are paid tiers.
+            </p>
+          </div>
+
+          <div class="grid grid-3 pricing-grid">
+            <article class="card plan reveal">
+              <header>
+                <h3>Developer</h3>
+                <div class="price"><span class="amount">Free</span></div>
+                <p class="muted">For hobby projects and evaluation.</p>
+              </header>
+              <ul class="plan-list">
+                <li>Open-source SDK, self-hosted Redis enforcement</li>
+                <li>Bring your own API keys</li>
+                <li>Up to 5 active agents</li>
+                <li>Community support</li>
+              </ul>
+              <a class="btn btn-ghost" href="#contact">Get the SDK</a>
+            </article>
+
+            <article class="card plan plan-feature reveal">
+              <header>
+                <span class="chip chip-accent">Most popular</span>
+                <h3>Startup</h3>
+                <div class="price">
+                  <span class="amount">$49</span>
+                  <span class="price-range">– $500 / mo</span>
+                </div>
+                <p class="muted">For AI-native teams shipping real agents.</p>
+              </header>
+              <ul class="plan-list">
+                <li>Managed vault + atomic enforcement</li>
+                <li>Virtual card issuance</li>
+                <li>Standard rail adapters</li>
+                <li>Shared reputation signal</li>
+                <li>Audit log API</li>
+              </ul>
+              <a class="btn btn-primary" href="#contact">Start 30-day trial</a>
+            </article>
+
+            <article class="card plan reveal">
+              <header>
+                <h3>Enterprise</h3>
+                <div class="price">
+                  <span class="amount">$2,500+</span>
+                  <span class="price-range">/ mo</span>
+                </div>
+                <p class="muted">For scale, compliance, and multi-region.</p>
+              </header>
+              <ul class="plan-list">
+                <li>HSM-backed vault · SOC 2 Type II</li>
+                <li>99.9% SLA · every rail adapter</li>
+                <li>Agent-to-agent delegation</li>
+                <li>Full reputation network access</li>
+                <li>SSO, RBAC, dedicated support</li>
+              </ul>
+              <a class="btn btn-ghost" href="#contact">Talk to us</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="section section-cta" id="contact">
+        <div class="container-narrow reveal">
+          <h2>Ready to give your agents a wallet?</h2>
+          <p class="muted">
+            We're onboarding ten design partners before public GA.
+            If you're shipping agents that spend real money, let's talk.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary btn-lg" href="mailto:contact@runvault.ai">contact@runvault.ai</a>
+            <a class="btn btn-ghost btn-lg" href="updates.html">Read the updates →</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>RunVault</span>
+        </div>
+        <div class="footer-cols">
+          <div>
+            <h4>Product</h4>
+            <a href="#how">How it works</a>
+            <a href="#pricing">Pricing</a>
+            <a href="updates.html">Updates</a>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <a href="mailto:contact@runvault.ai">Contact</a>
+            <a href="#">Careers</a>
+            <a href="#">Press</a>
+          </div>
+          <div>
+            <h4>Resources</h4>
+            <a href="#">Docs</a>
+            <a href="#">SDK reference</a>
+            <a href="#">Status</a>
+          </div>
+        </div>
+      </div>
+      <div class="container footer-base">
+        <span class="faint">© 2026 RunVault, Inc.</span>
+        <span class="faint">Financial identity for autonomous agents.</span>
+      </div>
+    </footer>
+
+    <script src="assets/js/theme.js" defer></script>
+    <script src="assets/js/reveal.js" defer></script>
+    <script src="assets/js/token-flow.js" defer></script>
+    <script src="assets/js/money-counter.js" defer></script>
+  </body>
 </html>
