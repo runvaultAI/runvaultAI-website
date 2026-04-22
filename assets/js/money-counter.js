@@ -31,8 +31,9 @@
   });
 
   function setValue(v) {
-    valueEl.textContent = fmt.format(v);
-    const pct = Math.min(100, (v / CAP) * 100);
+    const safe = Math.max(0, v);
+    valueEl.textContent = fmt.format(safe);
+    const pct = Math.max(0, Math.min(100, (safe / CAP) * 100));
     barEl.style.width = pct + "%";
   }
 
@@ -114,13 +115,13 @@
 
   function animateTo(to, done) {
     const from = current;
-    const dur = 600 + Math.min(400, (to - from) * 6);
+    const dur = Math.max(300, 600 + Math.min(400, Math.abs(to - from) * 6));
     const start = performance.now();
 
     function step(now) {
-      const t = Math.min(1, (now - start) / dur);
+      const t = Math.max(0, Math.min(1, (now - start) / dur));
       const eased = 1 - Math.pow(1 - t, 3);
-      current = from + (to - from) * eased;
+      current = Math.max(0, from + (to - from) * eased);
       setValue(current);
       updateStage();
       if (t < 1 && running) {
