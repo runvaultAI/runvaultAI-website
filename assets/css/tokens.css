@@ -11,7 +11,7 @@
   --fs-2xl: 2.25rem;
   --fs-3xl: 3rem;
   --fs-4xl: 4rem;
-  --fs-5xl: clamp(2.75rem, 6vw + 1rem, 5.25rem);
+  --fs-5xl: clamp(2.25rem, 5.5vw + 0.75rem, 5.25rem);
 
   --lh-tight: 1.1;
   --lh-snug: 1.25;

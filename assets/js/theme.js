@@ -20,12 +20,5 @@
     });
   });
 
-  // React to OS theme changes if user has not explicitly chosen
-  const mq = window.matchMedia("(prefers-color-scheme: light)");
-  mq.addEventListener("change", (e) => {
-    try {
-      if (localStorage.getItem(KEY)) return;
-    } catch (err) {}
-    apply(e.matches ? "light" : "dark");
-  });
+  // Dark is the product default. We intentionally do not follow the OS.
 })();
