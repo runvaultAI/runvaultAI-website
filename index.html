@@ -127,37 +127,95 @@ agent.<span class="fn">pay</span>(merchant=<span class="s">"amazon.com"</span>, 
           </div>
         </div>
 
-        <!-- MONEY COUNTER -->
+        <!-- MONITOR WIDGET -->
         <div class="container">
-          <div class="counter-card reveal" data-money-counter>
-            <div class="counter-meta">
-              <div class="counter-label">
+          <div class="monitor reveal" data-money-counter>
+            <div class="monitor-head">
+              <div class="monitor-label">
                 <span class="eyebrow" style="margin:0">Live monitoring</span>
-                <p class="mono faint counter-agent">
+                <p class="mono faint monitor-agent">
                   agent <span class="accent">research-agent-01</span>
-                  · cap <span>$500.00</span>
-                  · scope llm, commerce
+                  <span class="sep">·</span>
+                  authority <span>$500.00</span>
+                  <span class="sep">·</span>
+                  scope llm, commerce
                 </p>
               </div>
-              <div class="counter-status" data-counter-status>
+              <div class="monitor-status" data-counter-status>
                 <span class="counter-pulse" aria-hidden="true"></span>
                 <span class="counter-status-text">monitoring</span>
               </div>
             </div>
-            <div class="counter-display">
-              <span class="counter-currency">$</span>
-              <span class="counter-value" data-counter-value>0.00</span>
-              <span class="counter-cap faint">/ $500.00</span>
+
+            <div class="monitor-main">
+              <div class="monitor-left">
+                <svg class="gauge" viewBox="0 0 220 140" data-gauge aria-hidden="true">
+                  <defs>
+                    <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%"  stop-color="var(--accent)" />
+                      <stop offset="55%" stop-color="var(--accent)" />
+                      <stop offset="80%" stop-color="var(--warn)" />
+                      <stop offset="100%" stop-color="var(--danger)" />
+                    </linearGradient>
+                  </defs>
+                  <path class="gauge-bg" d="M 25 115 A 85 85 0 0 1 195 115" />
+                  <path class="gauge-fg" d="M 25 115 A 85 85 0 0 1 195 115" data-gauge-fg />
+                  <g class="gauge-ticks">
+                    <line x1="25" y1="115" x2="31" y2="107" />
+                    <line x1="47" y1="59" x2="55" y2="65" />
+                    <line x1="110" y1="30" x2="110" y2="40" />
+                    <line x1="173" y1="59" x2="165" y2="65" />
+                    <line x1="195" y1="115" x2="189" y2="107" />
+                  </g>
+                  <g class="gauge-needle" data-gauge-needle transform="rotate(-90 110 115)">
+                    <line x1="110" y1="115" x2="110" y2="42" />
+                    <circle cx="110" cy="115" r="7" />
+                  </g>
+                  <text class="gauge-label" x="22" y="132">0</text>
+                  <text class="gauge-label" x="108" y="22" text-anchor="middle">CAP</text>
+                  <text class="gauge-label" x="198" y="132" text-anchor="end">MAX</text>
+                </svg>
+
+                <div class="indicator-strip" role="group" aria-label="System indicators">
+                  <div class="indicator" data-indicator="auth"><span class="led"></span><span class="led-label">AUTH</span></div>
+                  <div class="indicator" data-indicator="gate"><span class="led"></span><span class="led-label">GATE</span></div>
+                  <div class="indicator" data-indicator="rail"><span class="led"></span><span class="led-label">RAIL</span></div>
+                  <div class="indicator" data-indicator="kya"><span class="led"></span><span class="led-label">KYA</span></div>
+                </div>
+              </div>
+
+              <div class="monitor-right">
+                <div class="readout-head">
+                  <span class="readout-tag mono">SPEND</span>
+                  <span class="readout-unit mono">USD</span>
+                </div>
+                <div class="seg-display" data-seg-display aria-hidden="true"></div>
+                <div class="readout-foot mono faint">
+                  <span>AUTH 500.00</span>
+                  <span class="sep">·</span>
+                  <span data-readout-pct>0%</span>
+                  <span class="sep">·</span>
+                  <span data-readout-remaining>500.00 LEFT</span>
+                </div>
+              </div>
             </div>
+
             <div class="counter-bar" aria-hidden="true">
               <div class="counter-bar-fill" data-counter-bar></div>
             </div>
+
             <div class="counter-events" data-counter-events aria-live="polite"></div>
+
+            <div class="monitor-console" aria-hidden="true">
+              <span class="prompt mono">&gt;</span>
+              <span class="cmd mono" data-console>runvault monitor --agent research-agent-01 --stream events</span>
+              <span class="cursor"></span>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- PROBLEM -->
+      <!-- PROBLEM CAROUSEL -->
       <section class="section" id="problem">
         <div class="container">
           <div class="section-head reveal">
@@ -165,112 +223,293 @@ agent.<span class="fn">pay</span>(merchant=<span class="s">"amazon.com"</span>, 
             <h2>The protocols are multiplying. The identity layer above them isn't.</h2>
             <p class="muted">
               Today, agents borrow financial identity from humans — shared API keys,
-              shared cards, shared billing accounts. When something goes wrong,
-              there's no per-agent credential to revoke, no atomic gate before the
-              charge, and no shared reputation that follows the agent across rails.
+              shared cards, shared billing accounts. Five ways that breaks down.
             </p>
           </div>
 
-          <div class="grid grid-3">
-            <article class="card card-num">
-              <span class="card-num-badge">01</span>
-              <h3>Agents hold raw credentials</h3>
-              <p>Developers embed real card numbers or raw API keys in agent context. A single prompt injection or context leak exposes the real account. There is no scoped credential an agent can hold safely.</p>
-            </article>
-            <article class="card card-num">
-              <span class="card-num-badge">02</span>
-              <h3>Six protocols, six silos</h3>
-              <p>ACP, AP2, TAP, Agent Pay, KYAPay, x402 each solve one execution layer. Each has its own agent registration and credential format. There is no unified identity layer above any of them.</p>
-            </article>
-            <article class="card card-num">
-              <span class="card-num-badge">03</span>
-              <h3>No atomic pre-transaction gate</h3>
-              <p>Networks authorise <em>after</em> the transaction is submitted. There is no single gate that enforces authority atomically before the upstream call — so concurrent agents race and overspend.</p>
-            </article>
-            <article class="card card-num">
-              <span class="card-num-badge">04</span>
-              <h3>Inference and commerce are separate surfaces</h3>
-              <p>An agent running Claude and completing a purchase operates under two unrelated caps with no shared enforcement. No unified view of agent economic activity across both surfaces.</p>
-            </article>
-            <article class="card card-num">
-              <span class="card-num-badge">05</span>
-              <h3>Agent reputation is not portable</h3>
-              <p>Mastercard, Visa, and Stripe each maintain their own agent registry. A behavioural profile built on one rail is invisible on another. Merchants cannot screen agents before fulfilling high-value orders.</p>
-            </article>
-            <article class="card card-quote">
-              <p class="quote">
-                "Every financial system built in the last 50 years assumes a human is
-                the economic actor. AI agents are not humans. They need a financial
-                identity of their own."
-              </p>
-            </article>
+          <div class="carousel reveal" data-carousel aria-roledescription="carousel" aria-label="Five reasons the current setup breaks" tabindex="0">
+            <div class="carousel-viewport">
+              <div class="carousel-track" data-carousel-track>
+                <!-- Slide 01 -->
+                <article class="carousel-slide" data-slide="0" aria-roledescription="slide">
+                  <div class="slide-art">
+                    <svg viewBox="0 0 320 240" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="160" cy="70" r="24" />
+                      <path d="M 112 215 Q 112 130 160 130 Q 208 130 208 215" />
+                      <rect x="132" y="150" width="56" height="36" rx="3" style="stroke: var(--warn)" />
+                      <line x1="140" y1="162" x2="170" y2="162" style="stroke: var(--warn); opacity: 0.8" />
+                      <line x1="140" y1="170" x2="162" y2="170" style="stroke: var(--warn); opacity: 0.5" />
+                      <line x1="140" y1="178" x2="180" y2="178" style="stroke: var(--warn); opacity: 0.7" />
+                      <path d="M 92 218 L 64 228" stroke-dasharray="3 4" style="stroke: var(--danger); opacity: 0.7" />
+                      <path d="M 228 218 L 256 228" stroke-dasharray="3 4" style="stroke: var(--danger); opacity: 0.7" />
+                      <path d="M 160 220 L 160 232" stroke-dasharray="3 4" style="stroke: var(--danger); opacity: 0.7" />
+                      <path d="M 244 90 L 268 128 L 220 128 Z" style="stroke: var(--danger)" />
+                      <line x1="244" y1="104" x2="244" y2="116" style="stroke: var(--danger)" stroke-width="1.8" />
+                      <circle cx="244" cy="122" r="1" fill="var(--danger)" stroke="none" />
+                    </svg>
+                  </div>
+                  <div class="slide-body">
+                    <span class="slide-num mono">01 / 05</span>
+                    <h3>Agents hold raw credentials</h3>
+                    <p>Developers embed real card numbers and API keys in agent context. A single prompt injection or context leak exposes the actual account — with no per-agent cap and no way to revoke just one agent.</p>
+                  </div>
+                </article>
+
+                <!-- Slide 02 -->
+                <article class="carousel-slide" data-slide="1" aria-roledescription="slide">
+                  <div class="slide-art">
+                    <svg viewBox="0 0 320 240" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="22"  y="55"  width="36" height="155" rx="3" />
+                      <rect x="70"  y="85"  width="36" height="125" rx="3" />
+                      <rect x="118" y="45"  width="36" height="165" rx="3" />
+                      <rect x="166" y="75"  width="36" height="135" rx="3" />
+                      <rect x="214" y="65"  width="36" height="145" rx="3" />
+                      <rect x="262" y="95"  width="36" height="115" rx="3" />
+                      <text x="24" y="50" font-family="JetBrains Mono, monospace" font-size="8" stroke="none" fill="currentColor" opacity="0.55">ACP</text>
+                      <text x="72" y="80" font-family="JetBrains Mono, monospace" font-size="8" stroke="none" fill="currentColor" opacity="0.55">AP2</text>
+                      <text x="120" y="40" font-family="JetBrains Mono, monospace" font-size="8" stroke="none" fill="currentColor" opacity="0.55">VIC</text>
+                      <text x="168" y="70" font-family="JetBrains Mono, monospace" font-size="8" stroke="none" fill="currentColor" opacity="0.55">TAP</text>
+                      <text x="216" y="60" font-family="JetBrains Mono, monospace" font-size="8" stroke="none" fill="currentColor" opacity="0.55">KYAPay</text>
+                      <text x="264" y="90" font-family="JetBrains Mono, monospace" font-size="8" stroke="none" fill="currentColor" opacity="0.55">x402</text>
+                      <g style="stroke: var(--danger)" stroke-width="1.5">
+                        <path d="M 60 140 l 10 0 M 65 135 l 0 10" />
+                        <path d="M 108 140 l 10 0 M 113 135 l 0 10" />
+                        <path d="M 156 140 l 10 0 M 161 135 l 0 10" />
+                        <path d="M 204 140 l 10 0 M 209 135 l 0 10" />
+                        <path d="M 252 140 l 10 0 M 257 135 l 0 10" />
+                      </g>
+                      <line x1="10" y1="210" x2="310" y2="210" opacity="0.4" />
+                    </svg>
+                  </div>
+                  <div class="slide-body">
+                    <span class="slide-num mono">02 / 05</span>
+                    <h3>Six protocols, six silos</h3>
+                    <p>ACP, AP2, TAP, Agent Pay, KYAPay, x402 — each one solves a slice of the execution layer with its own registration and credential format. There is no unified identity above any of them.</p>
+                  </div>
+                </article>
+
+                <!-- Slide 03 -->
+                <article class="carousel-slide" data-slide="2" aria-roledescription="slide">
+                  <div class="slide-art">
+                    <svg viewBox="0 0 320 240" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <!-- gate frame -->
+                      <line x1="78" y1="40" x2="78" y2="210" />
+                      <line x1="242" y1="40" x2="242" y2="210" />
+                      <line x1="58" y1="40" x2="262" y2="40" />
+                      <!-- bars (broken) -->
+                      <line x1="100" y1="50" x2="100" y2="130" />
+                      <line x1="130" y1="50" x2="130" y2="170" />
+                      <line x1="190" y1="50" x2="190" y2="100" />
+                      <line x1="220" y1="50" x2="220" y2="150" />
+                      <!-- flow of $ through the gap -->
+                      <g stroke="none" fill="var(--warn)" font-family="JetBrains Mono, monospace" font-weight="700" font-size="18">
+                        <text x="148" y="110">$</text>
+                        <text x="172" y="138">$</text>
+                        <text x="156" y="170">$</text>
+                        <text x="188" y="195">$</text>
+                        <text x="132" y="200">$</text>
+                      </g>
+                      <g opacity="0.4">
+                        <line x1="140" y1="118" x2="170" y2="118" />
+                        <line x1="140" y1="148" x2="175" y2="148" />
+                        <line x1="140" y1="180" x2="170" y2="180" />
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="slide-body">
+                    <span class="slide-num mono">03 / 05</span>
+                    <h3>Budget checks happen after the charge</h3>
+                    <p>Payment networks authorise <em>after</em> the transaction is submitted. Concurrent agents race each other and collectively overspend before any check fires.</p>
+                  </div>
+                </article>
+
+                <!-- Slide 04 -->
+                <article class="carousel-slide" data-slide="3" aria-roledescription="slide">
+                  <div class="slide-art">
+                    <svg viewBox="0 0 320 240" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <!-- left panel: bars -->
+                      <rect x="18" y="40" width="130" height="165" rx="6" />
+                      <text x="28" y="60" font-family="JetBrains Mono, monospace" font-size="9" stroke="none" fill="currentColor" opacity="0.65">LLM SPEND</text>
+                      <rect x="28"  y="120" width="20" height="65" stroke="none" fill="currentColor" opacity="0.35" />
+                      <rect x="58"  y="90"  width="20" height="95" stroke="none" fill="currentColor" opacity="0.55" />
+                      <rect x="88"  y="140" width="20" height="45" stroke="none" fill="currentColor" opacity="0.3" />
+                      <rect x="118" y="110" width="20" height="75" stroke="none" fill="currentColor" opacity="0.45" />
+                      <line x1="24" y1="188" x2="144" y2="188" opacity="0.5" />
+                      <!-- right panel: pie -->
+                      <rect x="172" y="40" width="130" height="165" rx="6" />
+                      <text x="182" y="60" font-family="JetBrains Mono, monospace" font-size="9" stroke="none" fill="currentColor" opacity="0.65">PURCHASES</text>
+                      <circle cx="237" cy="135" r="40" opacity="0.6" />
+                      <path d="M 237 135 L 237 95 A 40 40 0 0 1 271 155 Z" stroke="none" fill="currentColor" opacity="0.45" />
+                      <path d="M 237 135 L 271 155 A 40 40 0 0 1 207 152 Z" stroke="none" fill="currentColor" opacity="0.25" />
+                      <!-- broken connector -->
+                      <g style="stroke: var(--danger)" stroke-width="1.5">
+                        <line x1="153" y1="122" x2="166" y2="122" />
+                        <line x1="157" y1="116" x2="157" y2="128" />
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="slide-body">
+                    <span class="slide-num mono">04 / 05</span>
+                    <h3>LLM spend and purchase spend live in different systems</h3>
+                    <p>An agent can be well within its Claude budget while dramatically overspending on purchases. No single view of what an agent actually cost you.</p>
+                  </div>
+                </article>
+
+                <!-- Slide 05 -->
+                <article class="carousel-slide" data-slide="4" aria-roledescription="slide">
+                  <div class="slide-art">
+                    <svg viewBox="0 0 320 240" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="18"  y="55" width="88" height="130" rx="6" />
+                      <rect x="114" y="55" width="88" height="130" rx="6" style="stroke: var(--accent)" />
+                      <rect x="210" y="55" width="88" height="130" rx="6" />
+                      <text x="28"  y="75" font-family="JetBrains Mono, monospace" font-size="9" stroke="none" fill="currentColor" opacity="0.6">VISA</text>
+                      <text x="124" y="75" font-family="JetBrains Mono, monospace" font-size="9" stroke="none" fill="var(--accent)" opacity="0.9">STRIPE</text>
+                      <text x="220" y="75" font-family="JetBrains Mono, monospace" font-size="9" stroke="none" fill="currentColor" opacity="0.6">MC</text>
+                      <!-- stamp in the middle -->
+                      <circle cx="158" cy="125" r="28" style="stroke: var(--accent)" stroke-width="2" />
+                      <text x="158" y="124" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" stroke="none" fill="var(--accent)" text-anchor="middle">AGENT</text>
+                      <text x="158" y="137" font-family="JetBrains Mono, monospace" font-size="6.5" stroke="none" fill="var(--accent)" text-anchor="middle" opacity="0.8">RISK 12</text>
+                      <!-- question marks on sides -->
+                      <text x="62"  y="135" font-family="JetBrains Mono, monospace" font-size="28" stroke="none" fill="currentColor" opacity="0.35" text-anchor="middle">?</text>
+                      <text x="254" y="135" font-family="JetBrains Mono, monospace" font-size="28" stroke="none" fill="currentColor" opacity="0.35" text-anchor="middle">?</text>
+                    </svg>
+                  </div>
+                  <div class="slide-body">
+                    <span class="slide-num mono">05 / 05</span>
+                    <h3>A bad agent on one rail looks fine on the next</h3>
+                    <p>Reputation doesn't follow the agent. A behavioural profile built on one rail is invisible on every other, so merchants can't screen agents before fulfilling a high-value order.</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div class="carousel-controls">
+              <div class="carousel-dots" data-carousel-dots role="tablist" aria-label="Select problem"></div>
+              <div class="carousel-buttons">
+                <button class="carousel-btn" data-carousel-prev type="button" aria-label="Previous problem">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button class="carousel-btn" data-carousel-next type="button" aria-label="Next problem">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+              </div>
+            </div>
           </div>
+
+          <blockquote class="problem-quote reveal">
+            "Every financial system built in the last fifty years assumes a human is
+            the one spending. Agents aren't humans. They need a financial identity of their own."
+          </blockquote>
         </div>
       </section>
 
-      <!-- SOLUTION / HOW IT WORKS -->
+      <!-- HOW IT WORKS -->
       <section class="section section-alt" id="how">
         <div class="container">
           <div class="section-head reveal">
             <span class="eyebrow">How it works</span>
-            <h2>Three pieces. Two stay constant. The rail underneath changes.</h2>
+            <h2>One call. Every rail.</h2>
             <p class="muted">
-              RunVault sits between your agent and every execution mechanism.
-              The identity and the atomic gate never change. The rail beneath them does —
-              virtual card today, Stripe ACP, Visa VIC, AP2, x402 tomorrow.
+              Your agent asks. RunVault routes. Card, Stripe, Visa, Google — or
+              whatever ships next — it's the same two lines of code for you.
             </p>
           </div>
 
-          <div class="grid grid-3">
-            <article class="card card-step" style="--accent-local: var(--accent)">
-              <span class="card-step-num">01</span>
-              <h3>Financial identity</h3>
-              <p>
-                A scoped JWT issued to the agent at initialisation — carrying
-                <code>agent_id</code>, authority, scope, and TTL. The agent is a named
-                economic actor, not a human borrowing credentials. Revocable in under
-                a second. Portable across every rail and provider.
-              </p>
-            </article>
-            <article class="card card-step" style="--accent-local: var(--violet)">
-              <span class="card-step-num">02</span>
-              <h3>Atomic authority gate</h3>
-              <p>
-                A single Redis Lua script checks and debits authority in one atomic
-                operation before any spend executes — whether the agent is calling
-                Claude or completing a purchase. One gate. Both surfaces. Physically
-                impossible to race.
-              </p>
-            </article>
-            <article class="card card-step" style="--accent-local: var(--warn)">
-              <span class="card-step-num">03</span>
-              <h3>Execution rail abstraction</h3>
-              <p>
-                Virtual card, Stripe ACP, Visa VIC, AP2, x402, stablecoin — RunVault
-                routes to whatever mechanism fits the merchant. New rails arrive as
-                adapters. The identity and the gate are identical on every rail.
-              </p>
-            </article>
-          </div>
+          <figure class="flow reveal" data-flow aria-label="How RunVault routes an agent's spend across rails">
+            <svg class="flow-svg" viewBox="0 0 1000 260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <!-- Agent box -->
+              <g class="flow-agent">
+                <rect x="30" y="98" width="180" height="64" rx="10" />
+                <text x="120" y="124" text-anchor="middle" class="flow-title">Your agent</text>
+                <text x="120" y="146" text-anchor="middle" class="flow-sub">research-agent-01</text>
+              </g>
 
-          <div class="arch-diagram reveal" aria-hidden="true">
-            <div class="arch-row arch-row-core">
-              <div class="arch-node">Your agent</div>
-              <span class="arch-arrow">→</span>
-              <div class="arch-node arch-node-accent">Financial identity</div>
-              <span class="arch-arrow">→</span>
-              <div class="arch-node arch-node-accent">Atomic authority gate</div>
-              <span class="arch-arrow">→</span>
-              <div class="arch-node arch-node-muted">Execution rail</div>
+              <!-- Main pipe: agent → hub -->
+              <path class="flow-pipe flow-pipe-main" d="M 210 130 L 420 130" />
+
+              <!-- RunVault hub -->
+              <g class="flow-hub">
+                <circle class="hub-outer" cx="500" cy="130" r="70" />
+                <circle class="hub-mid"   cx="500" cy="130" r="50" />
+                <circle class="hub-core"  cx="500" cy="130" r="30" />
+                <text x="500" y="128" text-anchor="middle" class="flow-title">RunVault</text>
+                <text x="500" y="148" text-anchor="middle" class="flow-sub">identity · gate</text>
+              </g>
+
+              <!-- Branch pipes: hub → each rail -->
+              <path class="flow-pipe flow-branch" data-rail="0" d="M 570 130 Q 680 70  790 58" />
+              <path class="flow-pipe flow-branch" data-rail="1" d="M 570 130 Q 680 105 790 100" />
+              <path class="flow-pipe flow-branch" data-rail="2" d="M 570 130 L 790 142" />
+              <path class="flow-pipe flow-branch" data-rail="3" d="M 570 130 Q 680 170 790 184" />
+              <path class="flow-pipe flow-branch" data-rail="4" d="M 570 130 Q 680 200 790 226" />
+
+              <!-- Rails -->
+              <g class="flow-rails">
+                <g class="flow-rail" data-rail="0">
+                  <rect x="790" y="40"  width="180" height="36" rx="8" />
+                  <text x="880" y="63" text-anchor="middle">Virtual card</text>
+                </g>
+                <g class="flow-rail" data-rail="1">
+                  <rect x="790" y="82"  width="180" height="36" rx="8" />
+                  <text x="880" y="105" text-anchor="middle">Stripe ACP</text>
+                </g>
+                <g class="flow-rail" data-rail="2">
+                  <rect x="790" y="124" width="180" height="36" rx="8" />
+                  <text x="880" y="147" text-anchor="middle">Visa VIC</text>
+                </g>
+                <g class="flow-rail" data-rail="3">
+                  <rect x="790" y="166" width="180" height="36" rx="8" />
+                  <text x="880" y="189" text-anchor="middle">Google AP2</text>
+                </g>
+                <g class="flow-rail" data-rail="4">
+                  <rect x="790" y="208" width="180" height="36" rx="8" />
+                  <text x="880" y="231" text-anchor="middle">x402 · stablecoin</text>
+                </g>
+              </g>
+            </svg>
+
+            <figcaption class="flow-caption mono faint">
+              Every rail sits behind the same call. You integrate once; we keep adapting.
+            </figcaption>
+          </figure>
+
+          <div class="flow-steps reveal">
+            <div class="flow-step">
+              <div class="flow-step-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 10h20M6 16h20M6 22h20"/>
+                  <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                  <circle cx="14" cy="16" r="1.5" fill="currentColor"/>
+                  <circle cx="22" cy="22" r="1.5" fill="currentColor"/>
+                </svg>
+              </div>
+              <h3>A name for every agent</h3>
+              <p>Each agent gets its own account. Revoke just that one — instantly, without touching the others.</p>
             </div>
-            <div class="arch-row arch-row-rails">
-              <span class="arch-rail-label">Swappable rails:</span>
-              <span class="chip">Virtual card</span>
-              <span class="chip">Stripe ACP</span>
-              <span class="chip chip-violet">Visa VIC</span>
-              <span class="chip chip-warn">AP2</span>
-              <span class="chip chip-warn">x402 / USDC</span>
-              <span class="chip chip-faint">Next…</span>
+
+            <div class="flow-step">
+              <div class="flow-step-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4 L26 9 V17 C26 23 21 27 16 28 C11 27 6 23 6 17 V9 Z"/>
+                  <path d="M11 16 L15 20 L22 13"/>
+                </svg>
+              </div>
+              <h3>A ceiling you can trust</h3>
+              <p>Set how much an agent can spend. We stop the charge <em>before</em> the network ever sees it.</p>
+            </div>
+
+            <div class="flow-step">
+              <div class="flow-step-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="16" cy="16" r="3" fill="currentColor"/>
+                  <path d="M16 16 L6 6"/>
+                  <path d="M16 16 L26 6"/>
+                  <path d="M16 16 L6 26"/>
+                  <path d="M16 16 L26 26"/>
+                </svg>
+              </div>
+              <h3>Every rail, same code</h3>
+              <p>Virtual card today. New rails land as updates. Your integration doesn't move when the industry does.</p>
             </div>
           </div>
         </div>
@@ -459,9 +698,6 @@ agent.<span class="fn">pay</span>(merchant=<span class="s">"amazon.com"</span>, 
       </div>
     </footer>
 
-    <script src="assets/js/theme.js" defer></script>
-    <script src="assets/js/reveal.js" defer></script>
-    <script src="assets/js/token-flow.js" defer></script>
-    <script src="assets/js/money-counter.js" defer></script>
+    <script src="assets/js/site.js" defer></script>
   </body>
 </html>
